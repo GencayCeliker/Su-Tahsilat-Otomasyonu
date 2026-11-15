@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SuTahsilat.BLL/SuTahsilat.BLL.csproj" />
+  <Project Path="SuTahsilat.DAL/SuTahsilat.DAL.csproj" />
+  <Project Path="sutahsilatUI/sutahsilatUI.csproj" />
+</Solution>

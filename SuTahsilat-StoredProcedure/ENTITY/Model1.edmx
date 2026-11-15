@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SUTAHSILATModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ABONELER">
+          <Key>
+            <PropertyRef Name="AboneId" />
+          </Key>
+          <Property Name="AboneId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ad" Type="nvarchar" MaxLength="50" />
+          <Property Name="Soyad" Type="nvarchar" MaxLength="50" />
+          <Property Name="TCKimlik" Type="nchar" MaxLength="11" />
+          <Property Name="Adres" Type="nvarchar" MaxLength="255" />
+          <Property Name="Telefon" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="SAYACLAR">
+          <Key>
+            <PropertyRef Name="SayacId" />
+          </Key>
+          <Property Name="SayacId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AboneId" Type="int" />
+          <Property Name="Marka" Type="nvarchar" MaxLength="50" />
+          <Property Name="Seri" Type="nvarchar" MaxLength="10" />
+          <Property Name="Numara" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="TUKETIM">
+          <Key>
+            <PropertyRef Name="TuketimId" />
+          </Key>
+          <Property Name="TuketimId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SayacId" Type="int" />
+          <Property Name="OTarihi" Type="datetime" />
+          <Property Name="ENDEKS" Type="int" />
+          <Property Name="TuketimMiktari" Type="int" />
+          <Property Name="Tutar" Type="decimal" Precision="14" Scale="2" />
+        </EntityType>
+        <EntityType Name="UCRET">
+          <Key>
+            <PropertyRef Name="UcretId" />
+          </Key>
+          <Property Name="UcretId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BFiyat" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="KDVOrani" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="CTVOrani" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="ABOrani" Type="decimal" Precision="4" Scale="2" />
+        </EntityType>
+        <Association Name="FK__SAYACLAR__AboneI__4CA06362">
+          <End Role="ABONELER" Type="Self.ABONELER" Multiplicity="0..1" />
+          <End Role="SAYACLAR" Type="Self.SAYACLAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ABONELER">
+              <PropertyRef Name="AboneId" />
+            </Principal>
+            <Dependent Role="SAYACLAR">
+              <PropertyRef Name="AboneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TUKETIM__SayacId__4F7CD00D">
+          <End Role="SAYACLAR" Type="Self.SAYACLAR" Multiplicity="0..1" />
+          <End Role="TUKETIM" Type="Self.TUKETIM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAYACLAR">
+              <PropertyRef Name="SayacId" />
+            </Principal>
+            <Dependent Role="TUKETIM">
+              <PropertyRef Name="SayacId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_AboneKaydet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Ad" Type="nvarchar" Mode="In" />
+          <Parameter Name="Soyad" Type="nvarchar" Mode="In" />
+          <Parameter Name="TCKimlik" Type="nchar" Mode="In" />
+          <Parameter Name="Adres" Type="nvarchar" Mode="In" />
+          <Parameter Name="Telefon" Type="nvarchar" Mode="In" />
+          <Parameter Name="Marka" Type="nvarchar" Mode="In" />
+          <Parameter Name="Seri" Type="nvarchar" Mode="In" />
+          <Parameter Name="Numara" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_AboneListe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_TuketimKaydet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AboneId" Type="int" Mode="In" />
+          <Parameter Name="Endeks" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_TuketimListele" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AboneId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spTuketimDuzenle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AboneId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spTumTuketimDuzenle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="SUTAHSILATModelStoreContainer">
+          <EntitySet Name="ABONELER" EntityType="Self.ABONELER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SAYACLAR" EntityType="Self.SAYACLAR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TUKETIM" EntityType="Self.TUKETIM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UCRET" EntityType="Self.UCRET" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__SAYACLAR__AboneI__4CA06362" Association="Self.FK__SAYACLAR__AboneI__4CA06362">
+            <End Role="ABONELER" EntitySet="ABONELER" />
+            <End Role="SAYACLAR" EntitySet="SAYACLAR" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TUKETIM__SayacId__4F7CD00D" Association="Self.FK__TUKETIM__SayacId__4F7CD00D">
+            <End Role="SAYACLAR" EntitySet="SAYACLAR" />
+            <End Role="TUKETIM" EntitySet="TUKETIM" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SUTAHSILATModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ABONELER">
+          <Key>
+            <PropertyRef Name="AboneId" />
+          </Key>
+          <Property Name="AboneId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TCKimlik" Type="String" MaxLength="11" FixedLength="true" Unicode="true" />
+          <Property Name="Adres" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Telefon" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SAYACLAR" Relationship="Self.FK__SAYACLAR__AboneI__4CA06362" FromRole="ABONELER" ToRole="SAYACLAR" />
+        </EntityType>
+        <EntityType Name="SAYACLAR">
+          <Key>
+            <PropertyRef Name="SayacId" />
+          </Key>
+          <Property Name="SayacId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AboneId" Type="Int32" />
+          <Property Name="Marka" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Seri" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Numara" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ABONELER" Relationship="Self.FK__SAYACLAR__AboneI__4CA06362" FromRole="SAYACLAR" ToRole="ABONELER" />
+          <NavigationProperty Name="TUKETIM" Relationship="Self.FK__TUKETIM__SayacId__4F7CD00D" FromRole="SAYACLAR" ToRole="TUKETIM" />
+        </EntityType>
+        <EntityType Name="TUKETIM">
+          <Key>
+            <PropertyRef Name="TuketimId" />
+          </Key>
+          <Property Name="TuketimId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SayacId" Type="Int32" />
+          <Property Name="OTarihi" Type="DateTime" Precision="3" />
+          <Property Name="ENDEKS" Type="Int32" />
+          <Property Name="TuketimMiktari" Type="Int32" />
+          <Property Name="Tutar" Type="Decimal" Precision="14" Scale="2" />
+          <NavigationProperty Name="SAYACLAR" Relationship="Self.FK__TUKETIM__SayacId__4F7CD00D" FromRole="TUKETIM" ToRole="SAYACLAR" />
+        </EntityType>
+        <EntityType Name="UCRET">
+          <Key>
+            <PropertyRef Name="UcretId" />
+          </Key>
+          <Property Name="UcretId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BFiyat" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="KDVOrani" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="CTVOrani" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="ABOrani" Type="Decimal" Precision="4" Scale="2" />
+        </EntityType>
+        <Association Name="FK__SAYACLAR__AboneI__4CA06362">
+          <End Role="ABONELER" Type="Self.ABONELER" Multiplicity="0..1" />
+          <End Role="SAYACLAR" Type="Self.SAYACLAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ABONELER">
+              <PropertyRef Name="AboneId" />
+            </Principal>
+            <Dependent Role="SAYACLAR">
+              <PropertyRef Name="AboneId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TUKETIM__SayacId__4F7CD00D">
+          <End Role="SAYACLAR" Type="Self.SAYACLAR" Multiplicity="0..1" />
+          <End Role="TUKETIM" Type="Self.TUKETIM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SAYACLAR">
+              <PropertyRef Name="SayacId" />
+            </Principal>
+            <Dependent Role="TUKETIM">
+              <PropertyRef Name="SayacId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SUTAHSILATEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ABONELER" EntityType="Self.ABONELER" />
+          <EntitySet Name="SAYACLAR" EntityType="Self.SAYACLAR" />
+          <EntitySet Name="TUKETIM" EntityType="Self.TUKETIM" />
+          <EntitySet Name="UCRET" EntityType="Self.UCRET" />
+          <AssociationSet Name="FK__SAYACLAR__AboneI__4CA06362" Association="Self.FK__SAYACLAR__AboneI__4CA06362">
+            <End Role="ABONELER" EntitySet="ABONELER" />
+            <End Role="SAYACLAR" EntitySet="SAYACLAR" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TUKETIM__SayacId__4F7CD00D" Association="Self.FK__TUKETIM__SayacId__4F7CD00D">
+            <End Role="SAYACLAR" EntitySet="SAYACLAR" />
+            <End Role="TUKETIM" EntitySet="TUKETIM" />
+          </AssociationSet>
+          <FunctionImport Name="sp_AboneKaydet">
+            <Parameter Name="Ad" Mode="In" Type="String" />
+            <Parameter Name="Soyad" Mode="In" Type="String" />
+            <Parameter Name="TCKimlik" Mode="In" Type="String" />
+            <Parameter Name="Adres" Mode="In" Type="String" />
+            <Parameter Name="Telefon" Mode="In" Type="String" />
+            <Parameter Name="Marka" Mode="In" Type="String" />
+            <Parameter Name="Seri" Mode="In" Type="String" />
+            <Parameter Name="Numara" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_AboneListe" ReturnType="Collection(SUTAHSILATModel.sp_AboneListe_Result)" />
+          <FunctionImport Name="sp_TuketimKaydet">
+            <Parameter Name="AboneId" Mode="In" Type="Int32" />
+            <Parameter Name="Endeks" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_TuketimListele" ReturnType="Collection(SUTAHSILATModel.sp_TuketimListele_Result)">
+          <Parameter Name="AboneId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spTuketimDuzenle">
+          <Parameter Name="AboneId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spTumTuketimDuzenle" />
+        </EntityContainer>
+        <ComplexType Name="sp_AboneListe_Result">
+          <Property Type="Int32" Name="AboneId" Nullable="false" />
+          <Property Type="String" Name="Ad" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Soyad" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="TCKimlik" Nullable="true" MaxLength="11" />
+          <Property Type="String" Name="Adres" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Telefon" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="sp_TuketimListele_Result">
+          <Property Type="Int32" Name="SayacId" Nullable="false" />
+          <Property Type="Int32" Name="AboneId" Nullable="true" />
+          <Property Type="String" Name="Marka" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Seri" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Numara" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="TuketimId" Nullable="false" />
+          <Property Type="DateTime" Name="OTarihi" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="ENDEKS" Nullable="true" />
+          <Property Type="Int32" Name="TuketimMiktari" Nullable="true" />
+          <Property Type="Decimal" Name="Tutar" Nullable="true" Precision="14" Scale="2" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SUTAHSILATModelStoreContainer" CdmEntityContainer="SUTAHSILATEntities1">
+          <EntitySetMapping Name="ABONELER">
+            <EntityTypeMapping TypeName="SUTAHSILATModel.ABONELER">
+              <MappingFragment StoreEntitySet="ABONELER">
+                <ScalarProperty Name="AboneId" ColumnName="AboneId" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
+                <ScalarProperty Name="TCKimlik" ColumnName="TCKimlik" />
+                <ScalarProperty Name="Adres" ColumnName="Adres" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SAYACLAR">
+            <EntityTypeMapping TypeName="SUTAHSILATModel.SAYACLAR">
+              <MappingFragment StoreEntitySet="SAYACLAR">
+                <ScalarProperty Name="SayacId" ColumnName="SayacId" />
+                <ScalarProperty Name="AboneId" ColumnName="AboneId" />
+                <ScalarProperty Name="Marka" ColumnName="Marka" />
+                <ScalarProperty Name="Seri" ColumnName="Seri" />
+                <ScalarProperty Name="Numara" ColumnName="Numara" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TUKETIM">
+            <EntityTypeMapping TypeName="SUTAHSILATModel.TUKETIM">
+              <MappingFragment StoreEntitySet="TUKETIM">
+                <ScalarProperty Name="TuketimId" ColumnName="TuketimId" />
+                <ScalarProperty Name="SayacId" ColumnName="SayacId" />
+                <ScalarProperty Name="OTarihi" ColumnName="OTarihi" />
+                <ScalarProperty Name="ENDEKS" ColumnName="ENDEKS" />
+                <ScalarProperty Name="TuketimMiktari" ColumnName="TuketimMiktari" />
+                <ScalarProperty Name="Tutar" ColumnName="Tutar" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UCRET">
+            <EntityTypeMapping TypeName="SUTAHSILATModel.UCRET">
+              <MappingFragment StoreEntitySet="UCRET">
+                <ScalarProperty Name="UcretId" ColumnName="UcretId" />
+                <ScalarProperty Name="BFiyat" ColumnName="BFiyat" />
+                <ScalarProperty Name="KDVOrani" ColumnName="KDVOrani" />
+                <ScalarProperty Name="CTVOrani" ColumnName="CTVOrani" />
+                <ScalarProperty Name="ABOrani" ColumnName="ABOrani" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_AboneKaydet" FunctionName="SUTAHSILATModel.Store.sp_AboneKaydet" />
+          <FunctionImportMapping FunctionImportName="sp_AboneListe" FunctionName="SUTAHSILATModel.Store.sp_AboneListe">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SUTAHSILATModel.sp_AboneListe_Result">
+                <ScalarProperty Name="AboneId" ColumnName="AboneId" />
+                <ScalarProperty Name="Ad" ColumnName="Ad" />
+                <ScalarProperty Name="Soyad" ColumnName="Soyad" />
+                <ScalarProperty Name="TCKimlik" ColumnName="TCKimlik" />
+                <ScalarProperty Name="Adres" ColumnName="Adres" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_TuketimKaydet" FunctionName="SUTAHSILATModel.Store.sp_TuketimKaydet" />
+          <FunctionImportMapping FunctionImportName="sp_TuketimListele" FunctionName="SUTAHSILATModel.Store.sp_TuketimListele">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SUTAHSILATModel.sp_TuketimListele_Result">
+                <ScalarProperty Name="SayacId" ColumnName="SayacId" />
+                <ScalarProperty Name="AboneId" ColumnName="AboneId" />
+                <ScalarProperty Name="Marka" ColumnName="Marka" />
+                <ScalarProperty Name="Seri" ColumnName="Seri" />
+                <ScalarProperty Name="Numara" ColumnName="Numara" />
+                <ScalarProperty Name="TuketimId" ColumnName="TuketimId" />
+                <ScalarProperty Name="OTarihi" ColumnName="OTarihi" />
+                <ScalarProperty Name="ENDEKS" ColumnName="ENDEKS" />
+                <ScalarProperty Name="TuketimMiktari" ColumnName="TuketimMiktari" />
+                <ScalarProperty Name="Tutar" ColumnName="Tutar" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spTuketimDuzenle" FunctionName="SUTAHSILATModel.Store.spTuketimDuzenle" />
+          <FunctionImportMapping FunctionImportName="spTumTuketimDuzenle" FunctionName="SUTAHSILATModel.Store.spTumTuketimDuzenle" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
