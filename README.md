@@ -70,3 +70,7 @@ git clone https://github.com/GencayCeliker/Su-Tahsilat-Otomasyonu.git
 ```
 
 > Örnek verilerdeki TC Kimlik ve telefon numaraları gerçek değildir.
+
+## 📄 Lisans
+
+Bu proje [MIT](LICENSE) lisansı altında sunulmuştur.
