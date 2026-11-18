@@ -190,18 +190,20 @@ AS BEGIN
    BEGIN
 	  SET @OncekiTarih=(SELECT TOP(1) OTarihi FROM TUKETIM
 			  WHERE SayacId=@SayacId AND OTarihi<@OTarihi ORDER BY OTarihi DESC)
-      SET @OncekiEndeks=(SELECT Endeks FROM TUKETIM
-						 WHERE SayacId=@SayacId AND OTarihi=@OTarihi)
+      -- Önceki okumanın endeksi (önceden yanlışlıkla okumanın kendi tarihi kullanılıyordu, tüketim hep 0 çıkıyordu)
+      SET @OncekiEndeks=(SELECT TOP(1) Endeks FROM TUKETIM
+						 WHERE SayacId=@SayacId AND OTarihi=@OncekiTarih)
    END
    DECLARE @BFiyat DECIMAL(5,2)=(SELECT TOP(1) BFiyat FROM UCRET)
    DECLARE @KDVOrani DECIMAL(4,2)=(SELECT TOP(1) KDVOrani FROM UCRET)
    DECLARE @CTVOrani DECIMAL(4,2)=(SELECT TOP(1) CTVOrani FROM UCRET)
    DECLARE @ABOrani DECIMAL(4,2)=(SELECT TOP(1) ABOrani  FROM UCRET)
    SET @Tuketim=@Endeks-@OncekiEndeks
+   -- Oranlar yüzde olarak tutulur (KDV 20 = %20): trg_TuketimHesapla ile aynı formül
    SET @Tutar=@Tuketim*@BFiyat+
-		      @Tuketim*@BFiyat*@KDVOrani+
-			  @Tuketim*@BFiyat*@CTVOrani+
-			  @Tuketim*@BFiyat*@ABOrani
+		      @Tuketim*@BFiyat*(@KDVOrani/100)+
+			  @Tuketim*@BFiyat*(@CTVOrani/100)+
+			  @Tuketim*@BFiyat*(@ABOrani/100)
    
    UPDATE TUKETIM SET TuketimMiktari=@Tuketim,Tutar=@Tutar WHERE TuketimId=@TuketimId
    
