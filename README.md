@@ -14,6 +14,21 @@ Su abonelerinin, sayaçlarının ve sayaç okumalarının (tüketim) takibi içi
 
 ---
 
+## 🎬 Demo
+
+![demo](docs/demo.gif)
+
+**Stored procedure sürümü:** yeni sayaç okuması girilince `trg_TuketimHesapla` tüketimi ve vergiler dahil tutarı hesaplıyor; yeni abone + sayaç kaydı ve iki okuma; **Tüketim Düzenle** (cursor) aynı sonucu veriyor.
+
+| Yeni okuma: 100 m³ → 4.375,00 TL | Yeni abone ve okumaları |
+| --- | --- |
+| ![Yeni okuma: 100 m³ → 4.375,00 TL](docs/endeks.png) | ![Yeni abone ve okumaları](docs/yeni-abone.png) |
+
+> Code First sürümünün arayüz katmanı henüz geliştirilmediği için demo stored procedure sürümünden alınmıştır.
+>
+> Görüntüler, depodaki kurulum script'iyle kurulan örnek veritabanı üzerinde uygulama çalıştırılarak alınmıştır.
+
+
 ## 1️⃣ SuTahsilat-StoredProcedure
 
 ### Özellikler
